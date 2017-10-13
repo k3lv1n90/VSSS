@@ -44,22 +44,26 @@ public class ConnectionAccepter implements Runnable
         try
         {
             String ack = "You are online!";
-            DatagramPacket outPacket = new DatagramPacket(ack.getBytes(), ack.getBytes().length, clientAddress, 4599);
+            DatagramPacket outPacket = new DatagramPacket(ack.getBytes(), ack.getBytes().length, clientAddress, udpPort);
             DatagramSocket outSocket = new DatagramSocket();
             outSocket.send(outPacket);
             clients.add(new Client(inMsg.split(",")[1], clientAddress));
-            System.out.println(LocalDateTime.now());
-            System.out.println("Client " + inMsg.split(",")[1] + " connected!");
-            System.out.println("Client address is : " + clientAddress + " (" + clientUDPPort + ")");
-            System.out.println("============================================");
+            System.out.println(LocalDateTime.now() + 
+                "\nClient " + inMsg.split(",")[1] + " connected!" +
+                "\nClient address is : " + clientAddress + " (" + clientUDPPort + ")" +
+                "\n============================================");
         }
         catch(SocketException e)
         {
-            System.out.println("Error : " + e);
+            System.out.println("SocketException in ConnectionAccepter : " +
+                "\n" + e + 
+                "\n============================================");
         }
         catch(IOException e)
         {
-            System.out.println("Error : " + e);
+            System.out.println("IOException in ConnectionAccepter : " +
+                "\n" + e + 
+                "\n============================================");
         }
     }
 }

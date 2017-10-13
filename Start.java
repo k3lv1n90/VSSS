@@ -24,7 +24,9 @@ public class Start
     {
         try
         {
-            server = new Server();
+            System.out.println("Enter connection port : (i.e. 4501)");
+            int udpPort = Integer.parseInt(reader.nextLine());
+            server = new Server(udpPort);
         }
         catch(IOException e)
         {
@@ -34,12 +36,7 @@ public class Start
         /**GO ONLINE*/
         try
         {
-            if(server.goOnline())
-            {
-                System.out.println("Connected to server.");
-            } else {
-                System.out.println("Connection to server failed");
-            }
+            server.goOnline();
         }
         catch(IOException e)
         {

@@ -21,16 +21,18 @@ public class ListUpdater implements Runnable
     private int clientUDPPort;
     private ArrayList<Client> clients;
     private ArrayList<Video> videos;
+    private int udpPort;
     /**
      * Constructor for objects of class ConnectionAccepter
      */
-    public ListUpdater(String inMsg, InetAddress clientAddress, int clientUDPPort, ArrayList<Video> videos, ArrayList<Client> clients)
+    public ListUpdater(String inMsg, InetAddress clientAddress, int clientUDPPort, ArrayList<Video> videos, ArrayList<Client> clients, int udpPort)
     {
         this.inMsg = inMsg;
         this.clientAddress = clientAddress;
         this.clientUDPPort = clientUDPPort;
         this.clients = clients;
         this.videos = videos;
+        this.udpPort = udpPort;
     }
 
     /**
@@ -56,29 +58,44 @@ public class ListUpdater implements Runnable
                     break;
                 }
             } 
-            System.out.println(LocalDateTime.now());
-            System.out.println("List of videos received from " + clients.get(clientIndex).getUserName());
-
+            System.out.println(LocalDateTime.now() +
+                "\nList of videos received from " + clients.get(clientIndex).getUserName() +
+                "\n" + inMsg +
+                "\n============================================");
+            System.out.println(LocalDateTime.now() + "\nLatest video list : ");
+                
             String videosString = "";
             for(Video v: videos)
             {
                 videosString += v.toString() + "," ;
+                System.out.println("\n - " + v.toString());
             }
+            System.out.println("\n============================================");
             videosString = videosString.substring(0, videosString.length() - 1);
-
             for(int i = 0; i < clients.size(); i++)
             {
-                DatagramPacket outPacket = new DatagramPacket(videosString.getBytes(), videosString.getBytes().length, clientAddress, 4599);
+                DatagramPacket outPacket = new DatagramPacket(videosString.getBytes(), videosString.getBytes().length, clients.get(i).getAddress(), udpPort);
                 DatagramSocket outSocket = new DatagramSocket();
                 outSocket.send(outPacket);
             }
-
-            System.out.println("Videos list updated and sent to all clients!");
-            System.out.println("============================================");
+            System.out.println(LocalDateTime.now() +
+                "\nVideos list updated and sent to all clients" + 
+                "\n============================================");
         }
-        catch(Exception e)
+        catch(UnknownHostException e)
         {
-            System.out.println("Exception in ListUpdater : " + e);
+            System.out.println("UnknownHostException in ListUpdater : " + e + 
+                "\n============================================");
+        }
+        catch(SocketException e)
+        {
+            System.out.println("SocketException in ListUpdater : " + e + 
+                "\n============================================");
+        }
+        catch(IOException e)
+        {
+            System.out.println("IOException in ListUpdater : " + e + 
+                "\n============================================");
         }
     }
 }
