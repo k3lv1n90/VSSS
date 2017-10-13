@@ -20,16 +20,17 @@ public class ConnectionAccepter implements Runnable
     private InetAddress clientAddress;
     private int clientUDPPort;
     private ArrayList<Client> clients;
+    private int udpPort;
     /**
      * Constructor for objects of class ConnectionAccepter
      */
-    public ConnectionAccepter(String inMsg, InetAddress clientAddress, int clientUDPPort, ArrayList<Client> clients)
+    public ConnectionAccepter(String inMsg, InetAddress clientAddress, int clientUDPPort, ArrayList<Client> clients, int udpPort)
     {
         this.inMsg = inMsg;
         this.clientAddress = clientAddress;
         this.clientUDPPort = clientUDPPort;
         this.clients = clients;
-
+        this.udpPort = udpPort;
     }
 
     /**

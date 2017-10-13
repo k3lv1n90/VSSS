@@ -46,7 +46,7 @@ public class ListUpdater implements Runnable
             String[] vS = inMsg.split(",");
             for(int i = 1; i < vS.length; i = i + 2)
             {
-                videos.add(new Video(vS[i+1], InetAddress.getByName(vS[i])));
+                videos.add(new Video(vS[i], InetAddress.getByName(vS[i+1])));
             }
             int clientIndex;
             for(clientIndex = 0; clientIndex < clients.size(); clientIndex++)

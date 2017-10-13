@@ -29,6 +29,8 @@ public class Server{
 
     public Server() throws SocketException
     {
+        clients = new ArrayList<Client>();
+        videos = new ArrayList<Video>();
         outSocket = new DatagramSocket();
         inSocket = new DatagramSocket(udpPort);
         buf = new byte[256];
@@ -46,7 +48,7 @@ public class Server{
             inMsg = new String(inPacket.getData(), 0, inPacket.getLength());
             if(inMsg.startsWith("I'm online!"))
             {
-                Thread connectionAccepter = new Thread(new ConnectionAccepter(inMsg, clientAddress, clientUDPPort, clients));
+                Thread connectionAccepter = new Thread(new ConnectionAccepter(inMsg, clientAddress, clientUDPPort, clients, udpPort));
                 connectionAccepter.start();
             }
             if(inMsg.startsWith("myVideosList"))
